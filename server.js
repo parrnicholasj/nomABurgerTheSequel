@@ -7,6 +7,8 @@ const exphbs = require('express-handlebars');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+var db = require("./models");
+
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -31,4 +33,8 @@ app.get('*', function(req, res) {
 });
 
 // turn on server
-app.listen(PORT, () => console.log(`listening to http://localhost:${PORT}`));
+db.sequelize.sync().then(function() {
+  app.listen(PORT, function() {
+    console.log("App listening on PORT " + PORT);
+  });
+});
