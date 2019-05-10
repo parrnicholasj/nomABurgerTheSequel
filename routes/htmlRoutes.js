@@ -1,13 +1,16 @@
-// import our cats model
-const $ = require("../views/");
+const db = require("../models");
 
-// export our route definitions as a function
 module.exports = (app) => {
-
-  app.get("/", function(req, res) {
-
-    $.get("/api/burgers", function(data) {
-      res.render("index", {burgerData: data})
-    });
+  app.get("/", function (req, res) {
+    db.Burgers.findAll({})
+      .then(dbBurgerData => {
+        res.render("index", {
+          burgerData: dbBurgerData
+        })
+      })
+      .catch(err => {
+        console.log(err);
+        res.json(err);
+      });
   });
-}
+ }
